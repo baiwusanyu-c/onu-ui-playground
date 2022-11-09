@@ -1,0 +1,53 @@
+{
+  "name": "onu-ui-playground",
+  "version": "1.0.0",
+  "description": "Onu UI Playground",
+  "keywords": [
+    "unocss",
+    "onu-ui",
+    "playground",
+    "repl"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --max-warnings 0",
+    "lint:fix": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --max-warnings 0 --fix",
+    "release": "standard-version"
+  },
+  "dependencies": {
+    "@onu-ui/components": "1.0.10-beta.5",
+    "@onu-ui/preset": "1.0.10-beta.5",
+    "@onu-ui/utils": "1.0.10-beta.5",
+    "@unocss/preset-icons": "^0.46.3",
+    "@vue/repl": "^1.3.0",
+    "@vueuse/core": "^8.7.5",
+    "compare-versions": "^4.1.3",
+    "onu-ui": "^1.0.10-beta.5",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@sxzz/eslint-config-prettier": "^2.2.2",
+    "@sxzz/eslint-config-vue": "^2.2.2",
+    "@types/node": "*",
+    "@types/prettier": "^2.6.3",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/tsconfig": "^0.1.3",
+    "eslint": "^8.18.0",
+    "eslint-define-config": "^1.5.1",
+    "local-pkg": "^0.4.1",
+    "prettier": "^2.7.1",
+    "standard-version": "^9.5.0",
+    "typescript": "^4.7.4",
+    "unocss":  "^0.46.3",
+    "@iconify-json/carbon": "^1.1.9",
+    "unplugin-auto-import": "^0.7.2",
+    "unplugin-vue-components": "^0.19.9",
+    "vite": "^2.9.13",
+    "vite-plugin-inspect": "^0.5.0",
+    "vite-plugin-mkcert": "^1.7.2",
+    "vue-tsc": "^0.34.17"
+  }
+}
