@@ -80,7 +80,7 @@ async function copyLink() {
 
     <div flex items-center m-2>
       <div v-for="(v, key) of versions" :key="key" flex items-center>
-        <span  dark-text-gray-300 >{{ v.text }} Version:</span>
+        <span  dark-text-gray-300 font-bold>{{ v.text }} Version:</span>
         <o-popup
           position="bottom"
           :content-style="{ paddingLeft: 0, paddingRight: 0 }"

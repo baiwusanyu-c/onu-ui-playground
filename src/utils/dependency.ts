@@ -68,6 +68,34 @@ export const genImportMap = ({
       path: '/dist/onu-ui.js',
       source: 'jsdelivr',
     },
+
+
+   /* '@iconify-json/carbon': {
+      pkg: '@iconify-json/carbon',
+      path: '/carbon/index.js',
+      source: 'jsdelivr',
+    },*/
+   /* 'ohmyfetch': {
+      pkg: 'ohmyfetch',
+      path: '/dist/index.mjs',
+      source: 'jsdelivr',
+    },*/
+   /* '@unocss/preset-icons': {
+      pkg: '@unocss/preset-icons',
+      path: '/dist/browser.mjs',
+      source: 'jsdelivr',
+    },*/
+
+   /* '@unocss/core': {
+      pkg: '@unocss/core',
+      path: '/dist/index.mjs',
+      source: 'jsdelivr',
+    },*/
+    /*'@unocss/runtime': {
+      pkg: '@unocss/runtime',
+      path: '/uno.global.js',
+      source: 'jsdelivr',
+    },*/
     /*
     '@onu-ui/components': {
       pkg: '@onu-ui/components',
@@ -90,6 +118,21 @@ export const genImportMap = ({
   }
 
   const onuDesignWebVueDeps: Record<string, Dependency> = {
+   /* '@iconify-json/carbon': {
+      pkg: '@iconify-json/carbon',
+      path: '/carbon/index.js',
+      source: 'skyPack',
+    },
+    '@unocss/preset-icons': {
+      pkg: '@unocss/preset-icons',
+      path: '/preset-icons/dist/index.js',
+      source: 'skyPack',
+    },
+    'unocss': {
+      pkg: 'unocss',
+      path: 'dist/index.mjs',
+      source: 'skyPack',
+    },*/
     /*'resize-observer-polyfill': {
       pkg: 'resize-observer-polyfill',
       source: 'skyPack',

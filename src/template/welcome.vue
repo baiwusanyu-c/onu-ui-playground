@@ -7,6 +7,7 @@ const msg = ref('Hello Onu UI!')
 <template>
   <div class="container">
     <h1>{{ msg }}</h1>
+    <o-icon h-5 w-5 o="gray" name="i-carbon-moon" />
     <o-button o="primary"> Primary </o-button>
     <p>Vue {{ vueVersion }}</p>
     <p>onuUI {{ onuUI.version }}</p>
