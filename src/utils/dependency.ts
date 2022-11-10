@@ -65,15 +65,10 @@ export const genImportMap = ({
     'onu-ui': {
       pkg: 'onu-ui',
       version: onu,
-      path: '/dist/index.js',
+      path: '/dist/onu-ui.js',
       source: 'jsdelivr',
     },
-    'onu-ui/': {
-      pkg: 'onu-ui',
-      version: onu,
-      path: '/dist/index.js',
-      source: 'jsdelivr',
-    },
+    /*
     '@onu-ui/components': {
       pkg: '@onu-ui/components',
       version: onu,
@@ -91,11 +86,11 @@ export const genImportMap = ({
       version: onu,
       path: '/dist/index.js',
       source: 'jsdelivr',
-    },
+    },*/
   }
 
   const onuDesignWebVueDeps: Record<string, Dependency> = {
-    'resize-observer-polyfill': {
+    /*'resize-observer-polyfill': {
       pkg: 'resize-observer-polyfill',
       source: 'skyPack',
     },
@@ -157,7 +152,7 @@ export const genImportMap = ({
       pkg: 'dayjs',
       path: '/locale/zh-cn.js',
       source: 'skyPack',
-    },
+    },*/
   }
 
   return {
@@ -202,7 +197,7 @@ export const getSupportedOnuVersions = () => {
   const versions = $(getVersions('onu-ui'))
   return computed(() => {
     const canUserVersions = versions.filter((version) =>
-      compare(version, '1.0.8', '>=')
+      compare(version, '1.0.9', '>=')
     )
     if (canUserVersions.length > 0) {
       canUserVersions.unshift('latest')

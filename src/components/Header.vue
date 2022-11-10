@@ -72,13 +72,13 @@ async function copyLink() {
 
 <template>
   <nav class="header-nav" border-b-cyan-500 border-b shadow>
-    <div class="left" flex items-center>
+    <div class="left" flex items-center m-2>
       <img class="logo" alt="logo" :src="logoSVG" h-30px />
       <span text-lg font-bold>Onu-UI</span>
       <div ml-12px class="title">Playground</div>
     </div>
 
-    <div flex items-center>
+    <div flex items-center m-2>
       <div v-for="(v, key) of versions" :key="key" flex items-center>
         <span class="label">{{ v.text }} Version:</span>
         <o-popup
@@ -116,23 +116,23 @@ async function copyLink() {
         </o-popup>
       </div>
 
-      <a href="https://staging-cn.vuejs.org/" target="_blank">
+      <a href="https://staging-cn.vuejs.org/" target="_blank" class="header-a">
         <o-icon class="header-icon" name="i-logos:vue" />
       </a>
 
-      <a href="https://github.com/unocss/unocss" target="_blank">
+      <a href="https://github.com/unocss/unocss" target="_blank" class="header-a">
         <o-icon class="header-icon" name="i-logos:unocss" />
       </a>
 
-      <a href="https://onu.zyob.top/" target="_blank">
+      <a href="https://onu.zyob.top/" target="_blank" class="header-a">
         <img class="logo header-icon" alt="logo" :src="logoSVG" h-30px />
       </a>
 
-      <a href="https://github.com/onu-ui/onu-ui" target="_blank">
+      <a href="https://github.com/onu-ui/onu-ui" target="_blank" class="header-a">
         <o-icon class="header-icon" o="info" name="i-carbon-logo-github" />
       </a>
 
-      <a @click.prevent="toggleTheme()">
+      <a @click.prevent="toggleTheme()" class="header-a">
         <o-icon
           v-if="appDark"
           class="header-icon"
@@ -142,7 +142,7 @@ async function copyLink() {
         <o-icon v-else class="header-icon" o="info" name="i-carbon-sun" />
       </a>
 
-      <a @click="copyLink">
+      <a @click.prevent="copyLink" class="header-a">
         <o-icon class="header-icon" o="info" name="i-carbon-share" />
       </a>
     </div>
@@ -180,7 +180,9 @@ async function copyLink() {
     flex-wrap: wrap;
     justify-content: center;
   }
-
+  .header-a {
+    display: none;
+  }
   .logo {
     margin: 12px 0;
   }

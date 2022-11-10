@@ -2,9 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@iconify-json/carbon': ^1.1.9
-  '@onu-ui/components': 1.0.10-beta.5
-  '@onu-ui/preset': 1.0.10-beta.5
-  '@onu-ui/utils': 1.0.10-beta.5
   '@sxzz/eslint-config-prettier': ^2.2.2
   '@sxzz/eslint-config-vue': ^2.2.2
   '@types/node': '*'
@@ -18,7 +15,7 @@ specifiers:
   eslint: ^8.18.0
   eslint-define-config: ^1.5.1
   local-pkg: ^0.4.1
-  onu-ui: ^1.0.10-beta.5
+  onu-ui: ^1.0.10-beta.7
   prettier: ^2.7.1
   standard-version: ^9.5.0
   typescript: ^4.7.4
@@ -32,14 +29,11 @@ specifiers:
   vue-tsc: ^0.34.17
 
 dependencies:
-  '@onu-ui/components': 1.0.10-beta.5_vue@3.2.37
-  '@onu-ui/preset': 1.0.10-beta.5
-  '@onu-ui/utils': 1.0.10-beta.5_vue@3.2.37
   '@unocss/preset-icons': 0.46.3
   '@vue/repl': registry.npmmirror.com/@vue/repl/1.3.0_vue@3.2.37
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/8.7.5_vue@3.2.37
   compare-versions: 4.1.3
-  onu-ui: 1.0.10-beta.5_vue@3.2.37
+  onu-ui: 1.0.10-beta.7_vue@3.2.37
   vue: registry.npmmirror.com/vue/3.2.37
 
 devDependencies:
@@ -154,23 +148,23 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@onu-ui/components/1.0.10-beta.5_vue@3.2.37:
-    resolution: {integrity: sha512-2nPbxRmjBoSQJq/ivCWwToBbXKHvSS4qOkBN8b/urYPX/CrNIrvwiH10cMsiAZHB+nNvPWh0FUVf8hA3oEabXg==}
+  /@onu-ui/components/1.0.10-beta.7_vue@3.2.37:
+    resolution: {integrity: sha512-zcakFyv8A6clxaSkjOuGIHsqzc2vMQ77s9M2cAsRtrxeB5nyFQ4J9wxk4TgnTHhkWEFz0d2t1EAdgmYB0xlV1Q==}
     dependencies:
-      '@onu-ui/preset': 1.0.10-beta.5
-      '@onu-ui/utils': 1.0.10-beta.5_vue@3.2.37
+      '@onu-ui/preset': 1.0.10-beta.7
+      '@onu-ui/utils': 1.0.10-beta.7_vue@3.2.37
       '@vueuse/core': 9.4.0_vue@3.2.37
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
     dev: false
 
-  /@onu-ui/preset/1.0.10-beta.5:
-    resolution: {integrity: sha512-raT8wVppKV5r7MLP4633akJitUp0UyxA5fz7Ea94PWiTPJ14PrIi00DOeyZUI1hSXsBVkifd2IRczBVomnExMQ==}
+  /@onu-ui/preset/1.0.10-beta.7:
+    resolution: {integrity: sha512-9sc+YCHaMhHdNc3ljp/OmDmOruMbuTNHSvkK7fu1y62JYRRl01IATWYqfH4no7CVLLHVmqZe+9HGAWwtj178Ug==}
     dev: false
 
-  /@onu-ui/utils/1.0.10-beta.5_vue@3.2.37:
-    resolution: {integrity: sha512-qzfJKFJ37KCGVoM5WNLkp3HYK3jC0zpLoqD4WJbloVLpg6Dk4uKbHu2TvwKw7XpiGdiTXQBDnQRo574ebXym5A==}
+  /@onu-ui/utils/1.0.10-beta.7_vue@3.2.37:
+    resolution: {integrity: sha512-woX13thSwvApsNEyfQfA0kIc6DbNYjKIVC4tf1a/Jr9q4EbqmPF0bBkw4we2sr/mhZR6BrC39uNknessM2jL2A==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
@@ -884,10 +878,10 @@ packages:
     dependencies:
       mimic-fn: 2.1.0
 
-  /onu-ui/1.0.10-beta.5_vue@3.2.37:
-    resolution: {integrity: sha512-bpJnOqaQOadjQLf9JYeu6jQxsZubbXWjMIscJt1IJJ8505GqCJtRcnJF4N4O4jb31UlnFk37NBEOQ5clGUmXfQ==}
+  /onu-ui/1.0.10-beta.7_vue@3.2.37:
+    resolution: {integrity: sha512-TYF6vlGQQbt2msLWDmaF9PubuYgVAbu3i2ChUvCT91FjzmWEOLUGjIjI0RqMg2EmKJPnishH0Q+GWOGyigHGTA==}
     dependencies:
-      '@onu-ui/components': 1.0.10-beta.5_vue@3.2.37
+      '@onu-ui/components': 1.0.10-beta.7_vue@3.2.37
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue

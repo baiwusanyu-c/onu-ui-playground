@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // TODO：暂时强制修改一下 message样式
 import { Repl } from '@vue/repl'
-import { OMessage as message } from 'onu-ui'
+import { OButton, OMessage as message } from 'onu-ui'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import type { BuiltInParserName } from 'prettier'

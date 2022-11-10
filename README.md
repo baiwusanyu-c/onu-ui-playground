@@ -9,7 +9,7 @@
 - typescript
 - auto import onu ui
 
-> ‼️ onu-ui version support >= 1.0.8
+> ‼️ onu-ui version support >= 1.10.0
 
 ## 💥 relate project
 
