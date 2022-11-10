@@ -4,6 +4,7 @@ import { Repl } from '@vue/repl'
 import { OMessage as message } from 'onu-ui'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
+import { generate } from '@/utils/uno'
 import type { BuiltInParserName } from 'prettier'
 import type { SFCOptions } from '@vue/repl'
 import type { Fn } from '@vueuse/core'
@@ -106,6 +107,7 @@ useDark()
 
 // persist state
 watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
+generate()
 </script>
 
 <template>
@@ -129,7 +131,7 @@ watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
       justify-center
       flex-col
     >
-      <o-icon w-6 h-6 name="i-carbon-circle-dash"></o-icon>
+      <o-icon w-6 h-6 name="i-carbon-circle-dash" />
       <p text-lg>loading the playground...... 🤣</p>
     </div>
   </div>

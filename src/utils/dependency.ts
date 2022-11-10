@@ -69,24 +69,23 @@ export const genImportMap = ({
       source: 'jsdelivr',
     },
 
-
-   /* '@iconify-json/carbon': {
+    /* '@iconify-json/carbon': {
       pkg: '@iconify-json/carbon',
       path: '/carbon/index.js',
       source: 'jsdelivr',
     },*/
-   /* 'ohmyfetch': {
+    /* 'ohmyfetch': {
       pkg: 'ohmyfetch',
       path: '/dist/index.mjs',
       source: 'jsdelivr',
     },*/
-   /* '@unocss/preset-icons': {
+    /* '@unocss/preset-icons': {
       pkg: '@unocss/preset-icons',
       path: '/dist/browser.mjs',
       source: 'jsdelivr',
     },*/
 
-   /* '@unocss/core': {
+    /* '@unocss/core': {
       pkg: '@unocss/core',
       path: '/dist/index.mjs',
       source: 'jsdelivr',
@@ -118,7 +117,7 @@ export const genImportMap = ({
   }
 
   const onuDesignWebVueDeps: Record<string, Dependency> = {
-   /* '@iconify-json/carbon': {
+    /* '@iconify-json/carbon': {
       pkg: '@iconify-json/carbon',
       path: '/carbon/index.js',
       source: 'skyPack',

@@ -80,7 +80,7 @@ async function copyLink() {
 
     <div flex items-center m-2>
       <div v-for="(v, key) of versions" :key="key" flex items-center>
-        <span  dark-text-gray-300 font-bold>{{ v.text }} Version:</span>
+        <span dark-text-gray-300 font-bold>{{ v.text }} Version:</span>
         <o-popup
           position="bottom"
           :content-style="{ paddingLeft: 0, paddingRight: 0 }"
@@ -121,7 +121,11 @@ async function copyLink() {
         <o-icon h-5 w-5 mx-4 name="i-logos:vue" />
       </a>
 
-      <a href="https://github.com/unocss/unocss" target="_blank" class="header-a">
+      <a
+        href="https://github.com/unocss/unocss"
+        target="_blank"
+        class="header-a"
+      >
         <o-icon h-5 w-5 mx-4 name="i-logos:unocss" />
       </a>
 
@@ -129,22 +133,21 @@ async function copyLink() {
         <img h-5 w-5 mx-4 alt="logo" :src="logoSVG" h-30px />
       </a>
 
-      <a href="https://github.com/onu-ui/onu-ui" target="_blank" class="header-a">
+      <a
+        href="https://github.com/onu-ui/onu-ui"
+        target="_blank"
+        class="header-a"
+      >
         <o-icon h-5 w-5 mx-4 o="gray" name="i-carbon-logo-github" />
       </a>
 
-      <a @click.prevent="toggleTheme()" class="header-a" cursor-pointer>
-        <o-icon
-          v-if="appDark"
-          h-5 w-5 mx-4
-          o="gray"
-          name="i-carbon-moon"
-        />
+      <a class="header-a" cursor-pointer @click.prevent="toggleTheme()">
+        <o-icon v-if="appDark" h-5 w-5 mx-4 o="gray" name="i-carbon-moon" />
         <o-icon v-else h-5 w-5 mx-4 o="gray" name="i-carbon-sun" />
       </a>
 
-      <a @click.prevent="copyLink" class="header-a" cursor-pointer>
-        <o-icon h-5 w-5 mx-4 o="gray" name="i-carbon-share"/>
+      <a class="header-a" cursor-pointer @click.prevent="copyLink">
+        <o-icon h-5 w-5 mx-4 o="gray" name="i-carbon-share" />
       </a>
     </div>
   </nav>
@@ -155,11 +158,11 @@ async function copyLink() {
   overflow-y: auto;
   width: 200px;
 }
-.dark .header-nav{
-  --header-nav-bg: #1a1a1a
+.dark .header-nav {
+  --header-nav-bg: #1a1a1a;
 }
-.light .header-nav{
-  --header-nav-bg: #1a1a1a
+.light .header-nav {
+  --header-nav-bg: #1a1a1a;
 }
 .header-nav {
   position: relative;
@@ -172,7 +175,6 @@ async function copyLink() {
   background-color: var(--header-nav-bg);
 }
 
-
 @media (max-width: 720px) {
   .header-nav {
     height: auto;
@@ -180,7 +182,7 @@ async function copyLink() {
     justify-content: center;
   }
   .header-a {
-   display: none;
+    display: none;
   }
 }
 </style>

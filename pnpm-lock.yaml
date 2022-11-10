@@ -15,7 +15,6 @@ specifiers:
   compare-versions: ^4.1.3
   eslint: ^8.18.0
   eslint-define-config: ^1.5.1
-  local-pkg: ^0.4.1
   onu-ui: latest
   prettier: ^2.7.1
   standard-version: ^9.5.0
@@ -42,14 +41,13 @@ dependencies:
 
 devDependencies:
   '@sxzz/eslint-config-prettier': registry.npmmirror.com/@sxzz/eslint-config-prettier/2.2.2_eslint@8.18.0
-  '@sxzz/eslint-config-vue': registry.npmmirror.com/@sxzz/eslint-config-vue/2.2.2_eslint@8.18.0
+  '@sxzz/eslint-config-vue': registry.npmmirror.com/@sxzz/eslint-config-vue/2.2.2_b5e7v2qnwxfo6hmiq56u52mz3e
   '@types/node': 17.0.25
   '@types/prettier': registry.npmmirror.com/@types/prettier/2.6.3
   '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/2.3.3_vite@2.9.13+vue@3.2.37
   '@vue/tsconfig': 0.1.3_@types+node@17.0.25
   eslint: registry.npmmirror.com/eslint/8.18.0
   eslint-define-config: registry.npmmirror.com/eslint-define-config/1.5.1
-  local-pkg: 0.4.1
   prettier: registry.npmmirror.com/prettier/2.7.1
   standard-version: registry.npmmirror.com/standard-version/9.5.0
   typescript: registry.npmmirror.com/typescript/4.7.4
@@ -829,11 +827,6 @@ packages:
   /kolorist/1.5.1:
     resolution: {integrity: sha512-lxpCM3HTvquGxKGzHeknB/sUjuVoUElLlfYnXZT73K8geR9jQbroGlSCFBax9/0mpGoD3kzcMLnOlGQPJJNyqQ==}
 
-  /local-pkg/0.4.1:
-    resolution: {integrity: sha512-lL87ytIGP2FU5PWwNDo0w3WhIo2gopIAxPg9RxDYF7m4rr5ahuZxP22xnJHIvaLTe4Z9P6uKKY2UHiwyB4pcrw==}
-    engines: {node: '>=14'}
-    dev: true
-
   /local-pkg/0.4.2:
     resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
     engines: {node: '>=14'}
@@ -1460,13 +1453,14 @@ packages:
       - supports-color
     dev: true
 
-  registry.npmmirror.com/@sxzz/eslint-config-ts/2.2.2_eslint@8.18.0:
+  registry.npmmirror.com/@sxzz/eslint-config-ts/2.2.2_b5e7v2qnwxfo6hmiq56u52mz3e:
     resolution: {integrity: sha512-3aUvztzTRogf0bxLXUyhTvexemZ09xFfauZeG02Jk87VVRDQCobDWjeMm+OI8woHkhwAJReoFNjZlXafnqT87g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@sxzz/eslint-config-ts/-/eslint-config-ts-2.2.2.tgz}
     id: registry.npmmirror.com/@sxzz/eslint-config-ts/2.2.2
     name: '@sxzz/eslint-config-ts'
     version: 2.2.2
     peerDependencies:
       eslint: '>=7.4.0'
+      typescript: '>=3.9'
     dependencies:
       '@sxzz/eslint-config-basic': registry.npmmirror.com/@sxzz/eslint-config-basic/2.2.2_jcjk6dnujgon3wit7skqdg6x4a
       '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/5.27.1_prjfczuxx7fymtpeimewpv7ya4
@@ -1480,7 +1474,7 @@ packages:
       - supports-color
     dev: true
 
-  registry.npmmirror.com/@sxzz/eslint-config-vue/2.2.2_eslint@8.18.0:
+  registry.npmmirror.com/@sxzz/eslint-config-vue/2.2.2_b5e7v2qnwxfo6hmiq56u52mz3e:
     resolution: {integrity: sha512-SOJ3aGz4IwCfYs+SAvAheARa0jeFZlM4eMv9BskV5r1YjPnKK2vxcNIkaJ0hb34zIsgtIC/+Fo9A2qmMg7jdSg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@sxzz/eslint-config-vue/-/eslint-config-vue-2.2.2.tgz}
     id: registry.npmmirror.com/@sxzz/eslint-config-vue/2.2.2
     name: '@sxzz/eslint-config-vue'
@@ -1488,7 +1482,7 @@ packages:
     peerDependencies:
       eslint: '>=7.4.0'
     dependencies:
-      '@sxzz/eslint-config-ts': registry.npmmirror.com/@sxzz/eslint-config-ts/2.2.2_eslint@8.18.0
+      '@sxzz/eslint-config-ts': registry.npmmirror.com/@sxzz/eslint-config-ts/2.2.2_b5e7v2qnwxfo6hmiq56u52mz3e
       eslint: registry.npmmirror.com/eslint/8.18.0
       eslint-define-config: registry.npmmirror.com/eslint-define-config/1.5.1
       eslint-plugin-vue: registry.npmmirror.com/eslint-plugin-vue/9.1.1_eslint@8.18.0
@@ -1496,6 +1490,7 @@ packages:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
+      - typescript
     dev: true
 
   registry.npmmirror.com/@types/json-schema/7.0.11:
