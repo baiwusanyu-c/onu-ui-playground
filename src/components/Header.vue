@@ -22,10 +22,10 @@ interface Version {
 
 const appDark = useDark({
   selector: 'body',
-  attribute: 'arco-theme',
+  attribute: 'onu-theme',
   valueDark: 'dark',
   valueLight: 'light',
-  storageKey: 'arco-theme',
+  storageKey: 'onu-theme',
 })
 const replDark = useDark()
 const toggleAppTheme = useToggle(appDark)
@@ -72,15 +72,15 @@ async function copyLink() {
 
 <template>
   <nav class="header-nav" border-b-cyan-500 border-b shadow>
-    <div class="left" flex items-center m-2>
-      <img class="logo" alt="logo" :src="logoSVG" h-30px />
-      <span text-lg font-bold>Onu-UI</span>
-      <div ml-12px class="title">Playground</div>
+    <div flex items-center m-2>
+      <img w-8 h-8 mr-4 alt="logo" :src="logoSVG" h-30px />
+      <span text-lg font-bold dark-text-gray-100>Onu-UI</span>
+      <div ml-12px dark-text-gray-300>Playground</div>
     </div>
 
     <div flex items-center m-2>
       <div v-for="(v, key) of versions" :key="key" flex items-center>
-        <span class="label">{{ v.text }} Version:</span>
+        <span  dark-text-gray-300 >{{ v.text }} Version:</span>
         <o-popup
           position="bottom"
           :content-style="{ paddingLeft: 0, paddingRight: 0 }"
@@ -91,6 +91,7 @@ async function copyLink() {
             text-lg
             cursor-pointer
             text-stone-600
+            dark-text-gray-100
             flex
             items-center
           >
@@ -117,33 +118,33 @@ async function copyLink() {
       </div>
 
       <a href="https://staging-cn.vuejs.org/" target="_blank" class="header-a">
-        <o-icon class="header-icon" name="i-logos:vue" />
+        <o-icon h-5 w-5 mx-4 name="i-logos:vue" />
       </a>
 
       <a href="https://github.com/unocss/unocss" target="_blank" class="header-a">
-        <o-icon class="header-icon" name="i-logos:unocss" />
+        <o-icon h-5 w-5 mx-4 name="i-logos:unocss" />
       </a>
 
       <a href="https://onu.zyob.top/" target="_blank" class="header-a">
-        <img class="logo header-icon" alt="logo" :src="logoSVG" h-30px />
+        <img h-5 w-5 mx-4 alt="logo" :src="logoSVG" h-30px />
       </a>
 
       <a href="https://github.com/onu-ui/onu-ui" target="_blank" class="header-a">
-        <o-icon class="header-icon" o="info" name="i-carbon-logo-github" />
+        <o-icon h-5 w-5 mx-4 o="gray" name="i-carbon-logo-github" />
       </a>
 
-      <a @click.prevent="toggleTheme()" class="header-a">
+      <a @click.prevent="toggleTheme()" class="header-a" cursor-pointer>
         <o-icon
           v-if="appDark"
-          class="header-icon"
-          o="info"
+          h-5 w-5 mx-4
+          o="gray"
           name="i-carbon-moon"
         />
-        <o-icon v-else class="header-icon" o="info" name="i-carbon-sun" />
+        <o-icon v-else h-5 w-5 mx-4 o="gray" name="i-carbon-sun" />
       </a>
 
-      <a @click.prevent="copyLink" class="header-a">
-        <o-icon class="header-icon" o="info" name="i-carbon-share" />
+      <a @click.prevent="copyLink" class="header-a" cursor-pointer>
+        <o-icon h-5 w-5 mx-4 o="gray" name="i-carbon-share"/>
       </a>
     </div>
   </nav>
@@ -154,6 +155,12 @@ async function copyLink() {
   overflow-y: auto;
   width: 200px;
 }
+.dark .header-nav{
+  --header-nav-bg: #1a1a1a
+}
+.light .header-nav{
+  --header-nav-bg: #1a1a1a
+}
 .header-nav {
   position: relative;
   z-index: 999;
@@ -162,17 +169,9 @@ async function copyLink() {
   height: var(--nav-height);
   padding-left: 10px;
   padding-right: 10px;
+  background-color: var(--header-nav-bg);
 }
 
-.header-nav .logo {
-  margin: 0 12px;
-}
-
-.header-icon {
-  width: 20px;
-  height: 20px;
-  margin: 0 12px;
-}
 
 @media (max-width: 720px) {
   .header-nav {
@@ -181,10 +180,7 @@ async function copyLink() {
     justify-content: center;
   }
   .header-a {
-    display: none;
-  }
-  .logo {
-    margin: 12px 0;
+   display: none;
   }
 }
 </style>
