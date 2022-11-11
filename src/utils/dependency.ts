@@ -1,7 +1,5 @@
-import { compare } from 'compare-versions'
-import type { MaybeRef } from '@vueuse/core'
+
 import type { Versions } from '@/composables/store'
-import type { Ref } from 'vue'
 import type { ImportMap } from '@/utils/import-map'
 
 export const getSkyPack = (
@@ -211,39 +209,3 @@ export const genImportMap = ({
   }
 }
 
-export const getVersions = (pkg: MaybeRef<string>) => {
-  const url = computed(
-    () => `https://data.jsdelivr.com/v1/package/npm/${unref(pkg)}`
-  )
-  return useFetch(url, {
-    initialData: [],
-    afterFetch: (ctx) => ((ctx.data = ctx.data.versions), ctx),
-    refetch: true,
-  }).json<string[]>().data as Ref<string[]>
-}
-
-export const getSupportedVueVersions = () => {
-  const versions = getVersions('vue').value
-  return computed(() => {
-    const canUserVersions = versions.filter((version) =>
-      compare(version, '3.2.0', '>=')
-    )
-    if (canUserVersions.length > 0) {
-      canUserVersions.unshift('latest')
-    }
-    return canUserVersions
-  })
-}
-
-export const getSupportedOnuVersions = () => {
-  const versions = getVersions('onu-ui').value
-  return computed(() => {
-    const canUserVersions = versions.filter((version) =>
-      compare(version, '1.0.9', '>=')
-    )
-    if (canUserVersions.length > 0) {
-      canUserVersions.unshift('latest')
-    }
-    return canUserVersions
-  })
-}

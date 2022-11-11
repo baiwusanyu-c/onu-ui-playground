@@ -8,7 +8,7 @@ import { Repl } from '../vue-repl/vue-repl.js'
 import type { BuiltInParserName } from 'prettier'
 import type { Fn } from '@vueuse/core'
 import type { OMessageProps } from 'onu-ui'
-let loading = ref(true)
+const loading = ref(true)
 
 // enable experimental features
 const sfcOptions: any = {

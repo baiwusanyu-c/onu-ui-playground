@@ -1,15 +1,12 @@
 <script setup lang="ts">
-// TODO：
+
 import { OMessage as message } from 'onu-ui'
-import {
-  getSupportedOnuVersions,
-  getSupportedVueVersions,
-} from '../utils/dependency'
+import { getSupportVersions } from '@/utils/versions'
+import playConfig from '../../onu-ui-playground.config'
 import LogoUno from '../assets/logo.svg'
 import type { ComputedRef } from 'vue'
 import type { ReplStore, VersionKey } from '@/composables/store'
 import type { OMessageProps } from 'onu-ui'
-
 const { store } = defineProps<{
   store: ReplStore
 }>()
@@ -43,12 +40,12 @@ const logoSVG = computed(() => {
 const versions = reactive<Record<VersionKey, Version>>({
   onu: {
     text: 'Onu UI',
-    published: getSupportedOnuVersions(),
+    published: getSupportVersions('onu-ui', playConfig.onuUIMinVersion),
     active: store.versions.onu,
   },
   vue: {
     text: 'Vue',
-    published: getSupportedVueVersions(),
+    published: getSupportVersions('vue', playConfig.vueMinVersion),
     active: store.versions.vue,
   },
 })

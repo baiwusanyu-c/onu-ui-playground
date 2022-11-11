@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-imports */
 import * as __unocss from 'unocss'
-import type { UserConfig } from '@unocss/core'
+import type { UserConfig } from 'unocss'
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor
 

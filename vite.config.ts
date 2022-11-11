@@ -3,11 +3,11 @@ import { defineConfig } from 'vite'
 import Unocss from 'unocss/vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
-import pkg from './package.json'
+import Components from 'unplugin-vue-components/vite'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
-export default defineConfig(async ({ mode }) => {
+export default defineConfig( () => {
   return {
     resolve: {
       alias: {
@@ -23,6 +23,10 @@ export default defineConfig(async ({ mode }) => {
       AutoImport({
         imports: ['vue', '@vueuse/core'],
         dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
+      }),
+      Components({
+        dirs: [path.resolve(pathSrc, 'components')],
+        dts: path.resolve(pathSrc, 'components.d.ts'),
       }),
       Unocss(),
     ],
