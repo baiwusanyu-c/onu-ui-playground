@@ -4,7 +4,9 @@
 
 ## ❗ notice
 
-Since `uno-ui` is currently unstable, some components and styles may have problems in the playground
+> - Since `onu-ui` is currently unstable, some components and styles may have problems in the playground
+> 
+> - Will be migrated to `onu-ui` for maintenance at some time in the future
 
 ## 🎉supports
 
