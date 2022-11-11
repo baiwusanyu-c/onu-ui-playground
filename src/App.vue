@@ -1,28 +1,25 @@
 <script setup lang="ts">
-// TODO：暂时强制修改一下 message样式
 import { OMessage as message } from 'onu-ui'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import { generate } from '@/utils/uno/uno'
+// @ts-ignore
 import { Repl } from '../vue-repl/vue-repl.js'
+import playConfig from '../playground.config'
 import type { BuiltInParserName } from 'prettier'
 import type { Fn } from '@vueuse/core'
 import type { OMessageProps } from 'onu-ui'
-const loading = ref(true)
 
-// enable experimental features
+const loading = ref(true)
 const sfcOptions: any = {
   script: {
     reactivityTransform: true,
   },
 }
-
 const initialUserOptions: UserOptions = {}
-
 const params = new URLSearchParams(location.search)
-
 const initialVersions: Versions = {
-  onu: params.get('onu') || 'latest',
+  [playConfig.compLibShort]: params.get(playConfig.compLibShort) || 'latest',
   vue: params.get('vue') || 'latest',
 }
 
@@ -32,20 +29,13 @@ const store = useStore({
   versions: initialVersions,
 })
 
-const tipMsg = () => {
-  message.info({
+store.init().then(() => {
+  loading.value = false
+  message({
     content: 'please wait patiently',
     type: 'info',
   } as OMessageProps)
-}
-
-store.init().then(() => {
-  loading.value = false
-  tipMsg()
 })
-
-// eslint-disable-next-line no-console
-console.log('Store:', store)
 
 const handleKeydown = (evt: KeyboardEvent) => {
   if ((evt.ctrlKey || evt.metaKey) && evt.code === 'KeyS') {
@@ -65,8 +55,9 @@ let loadedFormat = false
 const formatCode = async () => {
   let close: Fn | undefined
   if (!loadedFormat) {
-    message.info({
+    message({
       content: 'Loading Prettier...',
+      type: 'info',
     } as OMessageProps)
   }
 
@@ -109,7 +100,7 @@ watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
 </script>
 
 <template>
-  <div class="onu-play">
+  <div class="comp-lib-play">
     <Header :store="store" />
     <Repl
       v-if="!loading"
@@ -147,8 +138,8 @@ body {
   --color-file-active: #06b6d4;
 }
 
-.onu-play .file.active,
-.onu-play button.active {
+.comp-lib-play .file.active,
+.comp-lib-play button.active {
   color: var(--color-file-active);
   border-bottom: 3px solid var(--color-file-active);
   cursor: text;
@@ -173,24 +164,5 @@ body {
   to {
     transform: rotate(360deg);
   }
-}
-/*uno messsage*/
-#message_1 {
-  color: #444444;
-  background-color: #dedfe0;
-  height: 30px;
-}
-#message_1 .o-icon-base {
-  color: #444444 !important;
-}
-
-/*uno messsage*/
-#message_2 {
-  color: #ffffff;
-  background-color: #34d399;
-  height: 30px;
-}
-#message_2 .o-icon-base {
-  color: #ffffff !important;
 }
 </style>

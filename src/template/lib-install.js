@@ -3,7 +3,7 @@ import UnoUI from 'onu-ui'
 let installed = false
 await loadStyle()
 
-export function onuInstall() {
+export function libInstall() {
   if (installed) return
   const instance = getCurrentInstance()
   // 安装组件库到vue

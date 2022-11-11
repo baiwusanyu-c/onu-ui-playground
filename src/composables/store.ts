@@ -1,26 +1,26 @@
-// @ts-ignore
 import { computed, ref, shallowRef } from 'vue'
 import { atou, utoa } from '@/utils/encode'
-import { genImportMap, genVueLink, getSkyPack } from '@/utils/dependency'
+import { genCDNLink, genImportMap, genVueLink } from '@/utils/dependency'
 import { type ImportMap, mergeImportMap } from '@/utils/import-map'
 import { IS_DEV } from '@/constants'
-// @ts-ignore
+import playConfig from '../../playground.config'
 import {
   File,
   type Store,
   type StoreState,
   compileFile,
+  // @ts-ignore
 } from '../../vue-repl/vue-repl.js'
 import mainCode from '../template/main.vue?raw'
 import welcomeCode from '../template/welcome.vue?raw'
-import onuInstallCode from '../template/onu-install.js?raw'
-
+import libInstallCode from '../template/lib-install.js?raw'
+// TODO：Refactor
 export interface Initial {
   serializedState?: string
   versions?: Versions
   userOptions?: UserOptions
 }
-export type VersionKey = 'vue' | 'onu'
+export type VersionKey = 'vue' | typeof playConfig.compLibShort
 export type Versions = Record<VersionKey, string>
 export interface UserOptions {
   styleSource?: string
@@ -32,13 +32,13 @@ export type SerializeState = Record<string, string> & {
 
 const MAIN_FILE = 'PlaygroundMain.vue'
 const APP_FILE = 'App.vue'
-const ONU_INSTALL = 'onu-install.js'
+const LIB_INSTALL = 'lib-install.js'
 const IMPORT_MAP = 'import-map.json'
 export const USER_IMPORT_MAP = 'import_map.json'
 
 export const useStore = (initial: Initial) => {
   const versions = reactive(
-    initial.versions || { vue: 'latest', onu: 'latest' }
+    initial.versions || { vue: 'latest', [playConfig.compLibShort]: 'latest' }
   )
 
   const compiler = shallowRef<typeof import('vue/compiler-sfc')>()
@@ -99,25 +99,30 @@ export const useStore = (initial: Initial) => {
   )
 
   watch(
-    () => versions.onu,
+    () => versions[playConfig.compLibShort],
     (version) => {
       const file = new File(
-        ONU_INSTALL,
-        generateOnuInstallCode(version, userOptions.value.styleSource).trim(),
+        LIB_INSTALL,
+        generateLibInstallCode(version, userOptions.value.styleSource).trim(),
         hideFile
       )
-      state.files[ONU_INSTALL] = file
+      state.files[LIB_INSTALL] = file
       compileFile(store, file)
     },
     { immediate: true }
   )
 
-  function generateOnuInstallCode(version: string, styleSource?: string) {
+  function generateLibInstallCode(version: string, styleSource?: string) {
     // 组件库样式文件
     const style = styleSource
       ? styleSource.replace('#VERSION#', version)
-      : getSkyPack('onu-ui', version, '/dist/style.css')
-    return onuInstallCode.replace('#STYLE#', style)
+      : genCDNLink(
+          playConfig.compLibName,
+          version,
+          playConfig.coreDeps[playConfig.compLibName].cssPath,
+          playConfig.cdnUrl.skypack
+        )
+    return libInstallCode.replace('#STYLE#', style)
   }
 
   async function setVueVersion(version: string) {
@@ -198,8 +203,7 @@ export const useStore = (initial: Initial) => {
   }
 
   function deleteFile(filename: string) {
-    if (filename === ONU_INSTALL) {
-      // Message.warning('You cannot remove it, because Onu Vue requires it.')
+    if (filename === LIB_INSTALL) {
       return
     }
     if (confirm(`Are you sure you want to delete ${filename}?`)) {
@@ -216,8 +220,8 @@ export const useStore = (initial: Initial) => {
 
   async function setVersion(key: VersionKey, version: string) {
     switch (key) {
-      case 'onu':
-        setOnuVueVersion(version)
+      case playConfig.compLibShort:
+        setLibVueVersion(version)
         break
       case 'vue':
         await setVueVersion(version)
@@ -225,8 +229,8 @@ export const useStore = (initial: Initial) => {
     }
   }
 
-  function setOnuVueVersion(version: string) {
-    versions.onu = version
+  function setLibVueVersion(version: string) {
+    versions[playConfig.compLibShort] = version
   }
 
   return {

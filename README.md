@@ -14,6 +14,7 @@
 - options and setup api
 - typescript
 - auto import onu ui
+- code prettier
 
 > ‼️ onu-ui version support >= 1.10.0
 

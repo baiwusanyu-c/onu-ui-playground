@@ -1,7 +1,8 @@
 <script setup lang="ts">
+// TODO：Refactor
 import { OMessage as message } from 'onu-ui'
 import { getSupportVersions } from '@/utils/versions'
-import playConfig from '../../onu-ui-playground.config'
+import playConfig from '../../playground.config'
 import LogoUno from '../assets/logo.svg'
 import type { ComputedRef } from 'vue'
 import type { ReplStore, VersionKey } from '@/composables/store'
@@ -18,10 +19,10 @@ interface Version {
 
 const appDark = useDark({
   selector: 'body',
-  attribute: 'onu-theme',
+  attribute: `${playConfig.compLibShort}-theme`,
   valueDark: 'dark',
   valueLight: 'light',
-  storageKey: 'onu-theme',
+  storageKey: `${playConfig.compLibShort}-theme`,
 })
 const replDark = useDark()
 const toggleAppTheme = useToggle(appDark)
@@ -37,10 +38,13 @@ const logoSVG = computed(() => {
 })
 
 const versions = reactive<Record<VersionKey, Version>>({
-  onu: {
-    text: 'Onu UI',
-    published: getSupportVersions('onu-ui', playConfig.onuUIMinVersion),
-    active: store.versions.onu,
+  [playConfig.compLibShort]: {
+    text: `${playConfig.title}`,
+    published: getSupportVersions(
+      `${playConfig.compLibName}`,
+      playConfig.compLibMinVersion
+    ),
+    active: store.versions[playConfig.compLibShort],
   },
   vue: {
     text: 'Vue',
@@ -57,11 +61,14 @@ async function setVersion(key: VersionKey, v: any) {
 
 async function copyLink() {
   const loc = document.location
-  const link = `${loc.origin}?onu=${store.versions.onu}&vue=${store.versions.vue}${loc.hash}`
+  const link = `${loc.origin}?${playConfig.compLibShort}=${
+    store.versions[playConfig.compLibShort]
+  }&vue=${store.versions.vue}${loc.hash}`
   await navigator.clipboard.writeText(link)
 
-  message.success({
+  message({
     content: 'Sharable URL has been copied to clipboard.',
+    type: 'success',
   } as OMessageProps)
 }
 </script>
@@ -70,7 +77,7 @@ async function copyLink() {
   <nav class="header-nav" border-b-cyan-500 border-b shadow>
     <div flex items-center m-2>
       <img w-8 h-8 mr-4 alt="logo" :src="logoSVG" h-30px />
-      <span text-lg font-bold dark-text-gray-100>Onu-UI</span>
+      <span text-lg font-bold dark-text-gray-100>{{ playConfig.title }}</span>
       <div ml-12px dark-text-gray-300>Playground</div>
     </div>
 

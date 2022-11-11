@@ -1,5 +1,5 @@
 import { compare } from 'compare-versions'
-import playConfig from '../../onu-ui-playground.config'
+import playConfig from '../../playground.config'
 import type { MaybeRef } from '@vueuse/core'
 import type { Ref } from 'vue'
 
