@@ -5,12 +5,12 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import Mkcert from 'vite-plugin-mkcert'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import pkg from './package.json'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
 export default defineConfig(async ({ mode }) => {
-
   return {
     resolve: {
       alias: {
@@ -21,7 +21,7 @@ export default defineConfig(async ({ mode }) => {
       'import.meta.env.APP_VERSION': JSON.stringify(pkg.version),
     },
     server: {
-      https: true,
+      https: false,
       host: true,
     },
     plugins: [
@@ -35,6 +35,7 @@ export default defineConfig(async ({ mode }) => {
       Unocss(),
       mode === 'production' ? Mkcert() : undefined,
       Inspect(),
+      basicSsl(),
     ],
   }
 })

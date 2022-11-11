@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 
-import '@vue/repl/style.css'
+import '../vue-repl/style.css'
 import 'uno.css'
 import 'onu-ui/dist/style.css'
 
@@ -13,5 +13,4 @@ window.VUE_DEVTOOLS_CONFIG = {
 }
 
 const app = createApp(App).use(onuUI)
-
 app.mount('#app')

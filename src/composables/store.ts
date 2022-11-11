@@ -1,8 +1,15 @@
-import { File, type Store, type StoreState, compileFile } from '@vue/repl'
+// @ts-ignore
 import { atou, utoa } from '@/utils/encode'
 import { genImportMap, genVueLink, getSkyPack } from '@/utils/dependency'
 import { type ImportMap, mergeImportMap } from '@/utils/import-map'
 import { IS_DEV } from '@/constants'
+// @ts-ignore
+import {
+  File,
+  type Store,
+  type StoreState,
+  compileFile,
+} from '../../vue-repl/vue-repl.js'
 import mainCode from '../template/main.vue?raw'
 import welcomeCode from '../template/welcome.vue?raw'
 import onuInstallCode from '../template/onu-install.js?raw'

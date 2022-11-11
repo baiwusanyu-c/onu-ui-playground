@@ -1,7 +1,7 @@
 import { createGenerator } from 'unocss'
 import { evaluateUserConfig } from './config'
 import defaultConfigRaw from './defaultConfig.ts?raw'
-import type { GenerateResult, UserConfig } from 'unocss'
+import type { UserConfig } from 'unocss'
 
 const defaultConfig = ref<UserConfig | undefined>()
 
@@ -14,11 +14,8 @@ async function load() {
 }
 await load()
 const uno = createGenerator({}, defaultConfig.value)
-const output = shallowRef<GenerateResult>()
-const init = ref(false)
 
-export async function generate() {
-  output.value = await uno.generate('<div class="h-5"></div>')
-  console.log(output.value.css)
-  init.value = true
+export async function generate(html: string, cb: Function) {
+  const output = await uno.generate(html || '')
+  cb(output.css)
 }

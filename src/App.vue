@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // TODO：暂时强制修改一下 message样式
-import { Repl } from '@vue/repl'
 import { OMessage as message } from 'onu-ui'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import { generate } from '@/utils/uno'
+import { Repl } from '../vue-repl/vue-repl.js'
 import type { BuiltInParserName } from 'prettier'
 import type { SFCOptions } from '@vue/repl'
 import type { Fn } from '@vueuse/core'
@@ -107,7 +107,6 @@ useDark()
 
 // persist state
 watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
-generate()
 </script>
 
 <template>
@@ -122,6 +121,7 @@ generate()
       :clear-console="false"
       :show-import-map="store.userOptions.value.showHidden || false"
       @keydown="handleKeydown"
+      @unocssInject="generate"
     />
     <div
       v-if="loading"
