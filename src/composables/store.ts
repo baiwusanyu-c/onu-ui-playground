@@ -1,4 +1,5 @@
 // @ts-ignore
+import { computed, ref, shallowRef } from 'vue'
 import { atou, utoa } from '@/utils/encode'
 import { genImportMap, genVueLink, getSkyPack } from '@/utils/dependency'
 import { type ImportMap, mergeImportMap } from '@/utils/import-map'
@@ -40,9 +41,9 @@ export const useStore = (initial: Initial) => {
     initial.versions || { vue: 'latest', onu: 'latest' }
   )
 
-  let compiler = $(shallowRef<typeof import('vue/compiler-sfc')>())
-  let userOptions = $ref<UserOptions>(initial.userOptions || {})
-  const hideFile = $computed(() => !IS_DEV && !userOptions.showHidden)
+  const compiler = shallowRef<typeof import('vue/compiler-sfc')>()
+  const userOptions = ref<UserOptions>(initial.userOptions || {})
+  const hideFile = computed(() => !IS_DEV && !userOptions.value.showHidden)
 
   const files = initFiles(initial.serializedState || '')
   const state = reactive({
@@ -54,8 +55,8 @@ export const useStore = (initial: Initial) => {
     vueServerRendererURL: '',
   })
 
-  const bultinImportMap = $computed<ImportMap>(() => genImportMap(versions))
-  const userImportMap = $computed<ImportMap>(() => {
+  const bultinImportMap = computed<ImportMap>(() => genImportMap(versions))
+  const userImportMap = computed<ImportMap>(() => {
     const code = state.files[USER_IMPORT_MAP]?.code.trim()
     if (!code) return {}
     let map: ImportMap = {}
@@ -66,16 +67,16 @@ export const useStore = (initial: Initial) => {
     }
     return map
   })
-  const importMap = $computed<ImportMap>(() =>
-    mergeImportMap(bultinImportMap, userImportMap)
+  const importMap = computed<ImportMap>(() =>
+    mergeImportMap(bultinImportMap.value, userImportMap.value)
   )
 
   // eslint-disable-next-line no-console
-  console.log('Files:', files, 'Options:', userOptions)
+  console.log('Files:', files, 'Options:', userOptions.value)
 
   const store = reactive({
     state,
-    compiler: $$(compiler),
+    compiler: compiler,
     setActive,
     addFile,
     init,
@@ -86,7 +87,7 @@ export const useStore = (initial: Initial) => {
   }) as Store
 
   watch(
-    $$(importMap),
+    ()=>importMap.value,
     (content) => {
       state.files[IMPORT_MAP] = new File(
         IMPORT_MAP,
@@ -102,7 +103,7 @@ export const useStore = (initial: Initial) => {
     (version) => {
       const file = new File(
         ONU_INSTALL,
-        generateOnuInstallCode(version, userOptions.styleSource).trim(),
+        generateOnuInstallCode(version, userOptions.value.styleSource).trim(),
         hideFile
       )
       state.files[ONU_INSTALL] = file
@@ -122,7 +123,7 @@ export const useStore = (initial: Initial) => {
   async function setVueVersion(version: string) {
     const { compilerSfc, runtimeDom } = genVueLink(version)
 
-    compiler = await import(/* @vite-ignore */ compilerSfc)
+    compiler.value = await import(/* @vite-ignore */ compilerSfc)
     state.vueRuntimeURL = runtimeDom
     versions.vue = version
 
@@ -132,7 +133,6 @@ export const useStore = (initial: Initial) => {
 
   async function init() {
     await setVueVersion(versions.vue)
-
     watchEffect(() => compileFile(store, state.activeFile))
 
     // eslint-disable-next-line no-restricted-syntax
@@ -152,7 +152,7 @@ export const useStore = (initial: Initial) => {
 
   function serialize() {
     const state: SerializeState = { ...getFiles() }
-    state._o = userOptions
+    state._o = userOptions.value
     return utoa(JSON.stringify(state))
   }
   function deserialize(text: string): SerializeState {
@@ -168,7 +168,7 @@ export const useStore = (initial: Initial) => {
         if (filename === '_o') continue
         files[filename] = new File(filename, file as string)
       }
-      userOptions = saved._o || {}
+      userOptions.value = saved._o || {}
     } else {
       files[APP_FILE] = new File(APP_FILE, welcomeCode)
     }
@@ -211,7 +211,7 @@ export const useStore = (initial: Initial) => {
   }
 
   function getImportMap() {
-    return importMap
+    return importMap.value
   }
 
   async function setVersion(key: VersionKey, version: string) {
@@ -233,7 +233,7 @@ export const useStore = (initial: Initial) => {
     ...store,
 
     versions,
-    userOptions: $$(userOptions),
+    userOptions: userOptions,
 
     init,
     serialize,

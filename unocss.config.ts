@@ -15,9 +15,7 @@ export default defineConfig({
       attributifyPseudo: true,
     }),
     presetAttributify(),
-    presetIcons({
-      cdn: 'https://esm.sh/',
-    }),
+    presetIcons(),
     presetTypography(),
     presetOnu(),
   ],

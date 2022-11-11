@@ -6,13 +6,12 @@ import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import { generate } from '@/utils/uno'
 import { Repl } from '../vue-repl/vue-repl.js'
 import type { BuiltInParserName } from 'prettier'
-import type { SFCOptions } from '@vue/repl'
 import type { Fn } from '@vueuse/core'
 import type { OMessageProps } from 'onu-ui'
-let loading = $ref(true)
+let loading = ref(true)
 
 // enable experimental features
-const sfcOptions: SFCOptions = {
+const sfcOptions: any = {
   script: {
     reactivityTransform: true,
   },
@@ -41,7 +40,7 @@ const tipMsg = () => {
 }
 
 store.init().then(() => {
-  loading = false
+  loading.value = false
   tipMsg()
 })
 

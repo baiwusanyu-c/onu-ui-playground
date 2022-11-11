@@ -223,7 +223,7 @@ export const getVersions = (pkg: MaybeRef<string>) => {
 }
 
 export const getSupportedVueVersions = () => {
-  const versions = $(getVersions('vue'))
+  const versions = getVersions('vue').value
   return computed(() => {
     const canUserVersions = versions.filter((version) =>
       compare(version, '3.2.0', '>=')
@@ -236,7 +236,7 @@ export const getSupportedVueVersions = () => {
 }
 
 export const getSupportedOnuVersions = () => {
-  const versions = $(getVersions('onu-ui'))
+  const versions = getVersions('onu-ui').value
   return computed(() => {
     const canUserVersions = versions.filter((version) =>
       compare(version, '1.0.9', '>=')
