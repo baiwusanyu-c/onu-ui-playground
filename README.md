@@ -2,6 +2,10 @@
 
 ![site-screenshot](./doc/img.png)
 
+## ❗ notice
+
+Since `uno-ui` is currently unstable, some components and styles may have problems in the playground
+
 ## 🎉supports
 
 - vue3
