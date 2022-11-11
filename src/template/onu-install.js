@@ -21,4 +21,3 @@ export function loadStyle() {
     document.body.append(link)
   })
 }
-

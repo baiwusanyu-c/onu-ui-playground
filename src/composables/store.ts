@@ -76,7 +76,7 @@ export const useStore = (initial: Initial) => {
 
   const store = reactive({
     state,
-    compiler: compiler,
+    compiler,
     setActive,
     addFile,
     init,
@@ -87,7 +87,7 @@ export const useStore = (initial: Initial) => {
   }) as Store
 
   watch(
-    ()=>importMap.value,
+    () => importMap.value,
     (content) => {
       state.files[IMPORT_MAP] = new File(
         IMPORT_MAP,
@@ -233,7 +233,7 @@ export const useStore = (initial: Initial) => {
     ...store,
 
     versions,
-    userOptions: userOptions,
+    userOptions,
 
     init,
     serialize,

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { OMessage as message } from 'onu-ui'
 import { getSupportVersions } from '@/utils/versions'
 import playConfig from '../../onu-ui-playground.config'

@@ -3,7 +3,7 @@
 import { OMessage as message } from 'onu-ui'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
-import { generate } from '@/utils/uno'
+import { generate } from '@/utils/uno/uno'
 import { Repl } from '../vue-repl/vue-repl.js'
 import type { BuiltInParserName } from 'prettier'
 import type { Fn } from '@vueuse/core'
@@ -120,7 +120,7 @@ watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
       :clear-console="false"
       :show-import-map="store.userOptions.value.showHidden || false"
       @keydown="handleKeydown"
-      @unocssInject="generate"
+      @unocss-inject="generate"
     />
     <div
       v-if="loading"

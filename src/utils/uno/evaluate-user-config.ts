@@ -1,7 +1,7 @@
-/* eslint-disable no-restricted-imports */
 import * as __unocss from 'unocss'
+// @ts-ignore
+import { $fetch } from 'ohmyfetch'
 import type { UserConfig } from 'unocss'
-
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor
 
 const CDN_BASE = 'https://esm.sh/'
@@ -40,9 +40,11 @@ export async function evaluateUserConfig<U = UserConfig>(
       modulesCache.set(
         name,
         name.endsWith('.json')
-          ? $fetch(CDN_BASE + name, { responseType: 'json' }).then((r) => ({
-              default: r,
-            }))
+          ? $fetch(CDN_BASE + name, { responseType: 'json' }).then(
+              (r: any) => ({
+                default: r,
+              })
+            )
           : _import(CDN_BASE + name)
       )
     }

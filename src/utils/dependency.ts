@@ -1,4 +1,3 @@
-
 import type { Versions } from '@/composables/store'
 import type { ImportMap } from '@/utils/import-map'
 
@@ -208,4 +207,3 @@ export const genImportMap = ({
     ),
   }
 }
-

@@ -6,5 +6,6 @@ module.exports = defineConfig({
     'no-alert': 'off',
     'import/namespace': 'off',
     'import/default': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
   },
 })

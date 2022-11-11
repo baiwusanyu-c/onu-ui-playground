@@ -4,9 +4,7 @@ import type { MaybeRef } from '@vueuse/core'
 import type { Ref } from 'vue'
 
 export const getVersions = (pkg: MaybeRef<string>) => {
-  const url = computed(
-    () => `${playConfig.versionUrl}${unref(pkg)}`
-  )
+  const url = computed(() => `${playConfig.versionUrl}${unref(pkg)}`)
   return useFetch(url, {
     initialData: [],
     afterFetch: (ctx) => ((ctx.data = ctx.data.versions), ctx),

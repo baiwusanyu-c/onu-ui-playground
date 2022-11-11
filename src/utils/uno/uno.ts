@@ -1,6 +1,6 @@
 import { createGenerator } from 'unocss'
-import defaultConfigRaw from '../../unocss.config.ts?raw'
-import { evaluateUserConfig } from './config'
+import defaultConfigRaw from '../../../unocss.config.ts?raw'
+import { evaluateUserConfig } from './evaluate-user-config'
 import type { UserConfig } from 'unocss'
 
 const defaultConfig = ref<UserConfig | undefined>()
