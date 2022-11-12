@@ -1,8 +1,16 @@
 import { computed, ref, shallowRef } from 'vue'
 import { atou, utoa } from '@/utils/encode'
-import { genCDNLink, genImportMap, genVueLink } from '@/utils/dependency'
+import { genCDNLink, genImportMap } from '@/utils/dependency'
 import { type ImportMap, mergeImportMap } from '@/utils/import-map'
-import { IS_DEV } from '@/constants'
+import {
+  APP_FILE,
+  IMPORT_MAP,
+  IS_DEV,
+  LIB_INSTALL,
+  MAIN_FILE,
+  USER_IMPORT_MAP,
+} from '@/constants'
+import { setVersion, setVueVersion } from '@/utils/versions'
 import playConfig from '../../playground.config'
 import {
   File,
@@ -14,7 +22,7 @@ import {
 import mainCode from '../template/main.vue?raw'
 import welcomeCode from '../template/welcome.vue?raw'
 import libInstallCode from '../template/lib-install.js?raw'
-// TODO：Refactor
+
 export interface Initial {
   serializedState?: string
   versions?: Versions
@@ -30,17 +38,10 @@ export type SerializeState = Record<string, string> & {
   _o?: UserOptions
 }
 
-const MAIN_FILE = 'PlaygroundMain.vue'
-const APP_FILE = 'App.vue'
-const LIB_INSTALL = 'lib-install.js'
-const IMPORT_MAP = 'import-map.json'
-export const USER_IMPORT_MAP = 'import_map.json'
-
 export const useStore = (initial: Initial) => {
   const versions = reactive(
     initial.versions || { vue: 'latest', [playConfig.compLibShort]: 'latest' }
   )
-
   const compiler = shallowRef<typeof import('vue/compiler-sfc')>()
   const userOptions = ref<UserOptions>(initial.userOptions || {})
   const hideFile = computed(() => !IS_DEV && !userOptions.value.showHidden)
@@ -55,7 +56,7 @@ export const useStore = (initial: Initial) => {
     vueServerRendererURL: '',
   })
 
-  const bultinImportMap = computed<ImportMap>(() => genImportMap(versions))
+  const builtImportMap = computed<ImportMap>(() => genImportMap(versions))
   const userImportMap = computed<ImportMap>(() => {
     const code = state.files[USER_IMPORT_MAP]?.code.trim()
     if (!code) return {}
@@ -68,11 +69,8 @@ export const useStore = (initial: Initial) => {
     return map
   })
   const importMap = computed<ImportMap>(() =>
-    mergeImportMap(bultinImportMap.value, userImportMap.value)
+    mergeImportMap(builtImportMap.value, userImportMap.value)
   )
-
-  // eslint-disable-next-line no-console
-  console.log('Files:', files, 'Options:', userOptions.value)
 
   const store = reactive({
     state,
@@ -125,34 +123,12 @@ export const useStore = (initial: Initial) => {
     return libInstallCode.replace('#STYLE#', style)
   }
 
-  async function setVueVersion(version: string) {
-    const { compilerSfc, runtimeDom } = genVueLink(version)
-
-    compiler.value = await import(/* @vite-ignore */ compilerSfc)
-    state.vueRuntimeURL = runtimeDom
-    versions.vue = version
-
-    // eslint-disable-next-line no-console
-    console.info(`[@vue/repl] Now using Vue version: ${version}`)
-  }
-
   async function init() {
-    await setVueVersion(versions.vue)
+    await setVueVersion(versions.vue, compiler, state, versions)
     watchEffect(() => compileFile(store, state.activeFile))
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const file in state.files) {
+    Object.keys(state.files).forEach((file) => {
       compileFile(store, state.files[file])
-    }
-  }
-
-  function getFiles() {
-    const exported: Record<string, string> = {}
-    for (const file of Object.values(state.files)) {
-      if (file.hidden) continue
-      exported[file.filename] = file.code
-    }
-    return exported
+    })
   }
 
   function serialize() {
@@ -160,9 +136,9 @@ export const useStore = (initial: Initial) => {
     state._o = userOptions.value
     return utoa(JSON.stringify(state))
   }
+
   function deserialize(text: string): SerializeState {
-    const state = JSON.parse(atou(text))
-    return state
+    return JSON.parse(atou(text))
   }
 
   function initFiles(serializedState: string) {
@@ -187,10 +163,18 @@ export const useStore = (initial: Initial) => {
     return files
   }
 
-  function setActive(filename: string) {
-    const file = state.files[filename]
-    if (file.hidden) return
-    state.activeFile = state.files[filename]
+  function getFiles() {
+    const exported: Record<string, string> = {}
+    for (const file of Object.values(state.files)) {
+      const fileInfo = file as {
+        filename: string
+        hidden: boolean
+        code: string
+      }
+      if (fileInfo.hidden) continue
+      exported[fileInfo.filename] = fileInfo.code
+    }
+    return exported
   }
 
   function addFile(fileOrFilename: string | File) {
@@ -214,34 +198,25 @@ export const useStore = (initial: Initial) => {
     }
   }
 
+  function setActive(filename: string) {
+    const file = state.files[filename]
+    if (file.hidden) return
+    state.activeFile = state.files[filename]
+  }
+
   function getImportMap() {
     return importMap.value
   }
 
-  async function setVersion(key: VersionKey, version: string) {
-    switch (key) {
-      case playConfig.compLibShort:
-        setLibVueVersion(version)
-        break
-      case 'vue':
-        await setVueVersion(version)
-        break
-    }
-  }
-
-  function setLibVueVersion(version: string) {
-    versions[playConfig.compLibShort] = version
-  }
-
   return {
     ...store,
-
     versions,
     userOptions,
-
     init,
     serialize,
     setVersion,
+    compiler,
+    state,
   }
 }
 

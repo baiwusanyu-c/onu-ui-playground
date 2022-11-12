@@ -1,7 +1,9 @@
 import { compare } from 'compare-versions'
+import { genVueLink } from '@/utils/dependency'
 import playConfig from '../../playground.config'
 import type { MaybeRef } from '@vueuse/core'
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
+import type { VersionKey, Versions } from '@/composables/store'
 
 export const getVersions = (pkg: MaybeRef<string>) => {
   const url = computed(() => `${playConfig.versionUrl}${unref(pkg)}`)
@@ -23,4 +25,36 @@ export const getSupportVersions = (pkg: string, minVersion: string) => {
     }
     return canUserVersions
   })
+}
+
+export async function setVueVersion(
+  version: string,
+  compiler: ShallowRef<typeof import('vue/compiler-sfc') | undefined>,
+  state: { vueRuntimeURL: string },
+  versions: Versions
+) {
+  const { compilerSfc, runtimeDom } = genVueLink(version)
+  compiler.value = await import(/* @vite-ignore */ compilerSfc)
+  state.vueRuntimeURL = runtimeDom
+  versions.vue = version
+
+  // eslint-disable-next-line no-console
+  console.info(`[@vue/repl] Now using Vue version: ${version}`)
+}
+
+export async function setVersion(
+  key: VersionKey,
+  version: string,
+  versions: Versions,
+  compiler: ShallowRef<typeof import('vue/compiler-sfc') | undefined>,
+  state: { vueRuntimeURL: string }
+) {
+  switch (key) {
+    case playConfig.compLibShort:
+      versions[playConfig.compLibShort] = version
+      break
+    case 'vue':
+      await setVueVersion(version, compiler, state, versions)
+      break
+  }
 }

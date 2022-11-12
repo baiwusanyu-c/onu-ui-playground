@@ -34,7 +34,7 @@ export const genVueLink = (version: string) => {
 
 export const genImportMap = ({
   vue,
-  lib,
+  [playConfig.compLibShort]: lib
 }: Partial<Versions> = {}): ImportMap => {
   // 指定组件库依赖路径，用于去cdn加载 组件库
   const deps: Record<string, Dependency> = {

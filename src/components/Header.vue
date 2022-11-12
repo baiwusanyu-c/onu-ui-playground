@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// TODO：Refactor
+
 import { OMessage as message } from 'onu-ui'
 import { getSupportVersions } from '@/utils/versions'
 import playConfig from '../../playground.config'
@@ -53,9 +53,9 @@ const versions = reactive<Record<VersionKey, Version>>({
   },
 })
 
-async function setVersion(key: VersionKey, v: any) {
+async function handleSetVersion(key: VersionKey, v: any) {
   versions[key].active = `loading...`
-  await store.setVersion(key, v)
+  await store.setVersion(key, v, store.versions, store.compiler, store.state)
   versions[key].active = v
 }
 
@@ -111,7 +111,7 @@ async function copyLink() {
                 h-30px
                 leading-loose
                 hover="bg-bluegray-100"
-                @click="setVersion(key, ver)"
+                @click="handleSetVersion(key, ver)"
               >
                 {{ ver }}
               </p>
