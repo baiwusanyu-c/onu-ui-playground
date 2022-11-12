@@ -56,22 +56,6 @@ export const useStore = (initial: Initial) => {
     vueServerRendererURL: '',
   })
 
-  const builtImportMap = computed<ImportMap>(() => genImportMap(versions))
-  const userImportMap = computed<ImportMap>(() => {
-    const code = state.files[USER_IMPORT_MAP]?.code.trim()
-    if (!code) return {}
-    let map: ImportMap = {}
-    try {
-      map = JSON.parse(code)
-    } catch (err) {
-      console.error(err)
-    }
-    return map
-  })
-  const importMap = computed<ImportMap>(() =>
-    mergeImportMap(builtImportMap.value, userImportMap.value)
-  )
-
   const store = reactive({
     state,
     compiler,
@@ -84,6 +68,26 @@ export const useStore = (initial: Initial) => {
     initialOutputMode: 'preview',
   }) as Store
 
+  // 构建依赖
+  const builtImportMap = computed<ImportMap>(() => genImportMap(versions))
+  // 用户写入 import_map.json 的依赖
+  const userImportMap = computed<ImportMap>(() => {
+    const code = state.files[USER_IMPORT_MAP]?.code.trim()
+    if (!code) return {}
+    let map: ImportMap = {}
+    try {
+      map = JSON.parse(code)
+    } catch (err) {
+      console.error(err)
+    }
+    return map
+  })
+
+  // 合并构建依赖与用户写入 import_map.json 的依赖
+  const importMap = computed<ImportMap>(() =>
+    mergeImportMap(builtImportMap.value, userImportMap.value)
+  )
+  // 监听 importMap, 生成file并修改state（state用于vue-repl）
   watch(
     () => importMap.value,
     (content) => {
@@ -124,7 +128,9 @@ export const useStore = (initial: Initial) => {
   }
 
   async function init() {
+    // 设置初始化 vue、组件库版本
     await setVueVersion(versions.vue, compiler, state, versions)
+    // 编译文件
     watchEffect(() => compileFile(store, state.activeFile))
     Object.keys(state.files).forEach((file) => {
       compileFile(store, state.files[file])

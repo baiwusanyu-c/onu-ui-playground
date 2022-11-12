@@ -1,9 +1,8 @@
 <script setup lang="ts">
-
 import { OMessage as message } from 'onu-ui'
 import { getSupportVersions } from '@/utils/versions'
 import playConfig from '../../playground.config'
-import LogoUno from '../assets/logo.svg'
+import logo from '../assets/logo.svg'
 import type { ComputedRef } from 'vue'
 import type { ReplStore, VersionKey } from '@/composables/store'
 import type { OMessageProps } from 'onu-ui'
@@ -17,6 +16,7 @@ interface Version {
   active: string
 }
 
+// 黑暗模式配置
 const appDark = useDark({
   selector: 'body',
   attribute: `${playConfig.compLibShort}-theme`,
@@ -24,19 +24,16 @@ const appDark = useDark({
   valueLight: 'light',
   storageKey: `${playConfig.compLibShort}-theme`,
 })
+// 触发黑暗模式
 const replDark = useDark()
 const toggleAppTheme = useToggle(appDark)
 const toggleReplTheme = useToggle(replDark)
-
 const toggleTheme = () => {
   toggleAppTheme()
   toggleReplTheme()
 }
 
-const logoSVG = computed(() => {
-  return LogoUno
-})
-
+// 支持版本列表（vue、组件库）
 const versions = reactive<Record<VersionKey, Version>>({
   [playConfig.compLibShort]: {
     text: `${playConfig.title}`,
@@ -53,12 +50,14 @@ const versions = reactive<Record<VersionKey, Version>>({
   },
 })
 
+// 设置选择的版本（vue、组件库）
 async function handleSetVersion(key: VersionKey, v: any) {
   versions[key].active = `loading...`
   await store.setVersion(key, v, store.versions, store.compiler, store.state)
   versions[key].active = v
 }
 
+// 分享连接
 async function copyLink() {
   const loc = document.location
   const link = `${loc.origin}?${playConfig.compLibShort}=${
@@ -76,7 +75,7 @@ async function copyLink() {
 <template>
   <nav class="header-nav" border-b-cyan-500 border-b shadow>
     <div flex items-center m-2>
-      <img w-8 h-8 mr-4 alt="logo" :src="logoSVG" h-30px />
+      <img w-8 h-8 mr-4 alt="logo" :src="logo" h-30px />
       <span text-lg font-bold dark-text-gray-100>{{ playConfig.title }}</span>
       <div ml-12px dark-text-gray-300>Playground</div>
     </div>
@@ -133,7 +132,7 @@ async function copyLink() {
       </a>
 
       <a href="https://onu.zyob.top/" target="_blank" class="header-a">
-        <img h-5 w-5 mx-4 alt="logo" :src="logoSVG" h-30px />
+        <img h-5 w-5 mx-4 alt="logo" :src="logo" h-30px />
       </a>
 
       <a

@@ -4,13 +4,13 @@ import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import { generate } from '@/utils/uno/uno'
 // @ts-ignore
+import { handleKeydown } from '@/utils/format'
 import { Repl } from '../vue-repl/vue-repl.js'
 import playConfig from '../playground.config'
-import type { BuiltInParserName } from 'prettier'
-import type { Fn } from '@vueuse/core'
 import type { OMessageProps } from 'onu-ui'
 
 const loading = ref(true)
+// sfc 配置，他将在在 vue-repl 中用于 compiler-sfc
 const sfcOptions: any = {
   script: {
     reactivityTransform: true,
@@ -18,17 +18,21 @@ const sfcOptions: any = {
 }
 const initialUserOptions: UserOptions = {}
 const params = new URLSearchParams(location.search)
+// 初始版本对象，包括 vue、组件库
 const initialVersions: Versions = {
   [playConfig.compLibShort]: params.get(playConfig.compLibShort) || 'latest',
   vue: params.get('vue') || 'latest',
 }
 
+// 主要业务都在 store 里
+// 包括各个依赖请求、依赖的相关参数变化监听、版本初始化等
 const store = useStore({
-  serializedState: location.hash.slice(1),
+  serializedState: location.hash.slice(1), // 序列化 url 中的参数
   userOptions: initialUserOptions,
-  versions: initialVersions,
+  versions: initialVersions, // 版本对象
 })
 
+// 初始化，设置版本、编译文件后修改 state 传给 vue-repl
 store.init().then(() => {
   loading.value = false
   message({
@@ -37,66 +41,11 @@ store.init().then(() => {
   } as OMessageProps)
 })
 
-const handleKeydown = (evt: KeyboardEvent) => {
-  if ((evt.ctrlKey || evt.metaKey) && evt.code === 'KeyS') {
-    evt.preventDefault()
-    return
-  }
-
-  // NOTE: ctrl or alt + shift + f => format code
-  if ((evt.altKey || evt.ctrlKey) && evt.shiftKey && evt.code === 'KeyF') {
-    evt.preventDefault()
-    formatCode()
-    return
-  }
-}
-
-let loadedFormat = false
-const formatCode = async () => {
-  let close: Fn | undefined
-  if (!loadedFormat) {
-    message({
-      content: 'Loading Prettier...',
-      type: 'info',
-    } as OMessageProps)
-  }
-
-  const [format, parserHtml, parserTypeScript, parserBabel, parserPostcss] =
-    await Promise.all([
-      import('prettier/standalone').then((r) => r.format),
-      import('prettier/parser-html').then((m) => m.default),
-      import('prettier/parser-typescript').then((m) => m.default),
-      import('prettier/parser-babel').then((m) => m.default),
-      import('prettier/parser-postcss').then((m) => m.default),
-    ])
-  loadedFormat = true
-  close?.()
-
-  const file = store.state.activeFile
-  let parser: BuiltInParserName
-  if (file.filename.endsWith('.vue')) {
-    parser = 'vue'
-  } else if (file.filename.endsWith('.js')) {
-    parser = 'babel'
-  } else if (file.filename.endsWith('.ts')) {
-    parser = 'typescript'
-  } else if (file.filename.endsWith('.json')) {
-    parser = 'json'
-  } else {
-    return
-  }
-  file.code = format(file.code, {
-    parser,
-    plugins: [parserHtml, parserTypeScript, parserBabel, parserPostcss],
-    semi: false,
-    singleQuote: true,
-  })
-}
-
-useDark()
-
-// persist state
-watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
+// 将默认的虚拟文件信息添加到url上,
+// 实现只输入域名能够重定向到有文件信息参数的效果
+watchEffect(() => {
+  history.replaceState({}, '', `#${store.serialize()}`)
+})
 </script>
 
 <template>
@@ -110,7 +59,7 @@ watchEffect(() => history.replaceState({}, '', `#${store.serialize()}`))
       :sfc-options="sfcOptions"
       :clear-console="false"
       :show-import-map="store.userOptions.value.showHidden || false"
-      @keydown="handleKeydown"
+      @keydown="(event) => handleKeydown(event, store)"
       @unocss-inject="generate"
     />
     <div
