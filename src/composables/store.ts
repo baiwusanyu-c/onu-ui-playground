@@ -1,4 +1,5 @@
 import { computed, ref, shallowRef } from 'vue'
+import { File, type Store, type StoreState, compileFile } from '@vue/repl'
 import { atou, utoa } from '@/utils/encode'
 import { genCDNLink, genImportMap } from '@/utils/dependency'
 import { type ImportMap, mergeImportMap } from '@/utils/import-map'
@@ -12,13 +13,6 @@ import {
 } from '@/constants'
 import { setVersion, setVueVersion } from '@/utils/versions'
 import playConfig from '../../playground.config'
-import {
-  File,
-  type Store,
-  type StoreState,
-  compileFile,
-  // @ts-ignore
-} from '../../vue-repl/vue-repl.js'
 import mainCode from '../template/main.vue?raw'
 import welcomeCode from '../template/welcome.vue?raw'
 import libInstallCode from '../template/lib-install.js?raw'
@@ -39,14 +33,21 @@ export type SerializeState = Record<string, string> & {
 }
 
 export const useStore = (initial: Initial) => {
+  // 版本
   const versions = reactive(
     initial.versions || { vue: 'latest', [playConfig.compLibShort]: 'latest' }
   )
+  // 编译器
   const compiler = shallowRef<typeof import('vue/compiler-sfc')>()
+  // 用户配置
   const userOptions = ref<UserOptions>(initial.userOptions || {})
-  const hideFile = computed(() => !IS_DEV && !userOptions.value.showHidden)
-
+  // 是否隐藏
+  const hideFile = computed<boolean>(
+    () => !IS_DEV && !userOptions.value.showHidden
+  )
+  // 根据 url 参数生成文件信息
   const files = initFiles(initial.serializedState || '')
+  // 根据文件信息初始化 state，它将用于 vue-repl
   const state = reactive({
     mainFile: MAIN_FILE,
     files,
@@ -54,11 +55,12 @@ export const useStore = (initial: Initial) => {
     errors: [],
     vueRuntimeURL: '',
     vueServerRendererURL: '',
+    resetFlip: true,
   })
-
-  const store = reactive({
+  // 初始化 store，它将用于 vue-repl
+  const store = reactive<Store>({
     state,
-    compiler,
+    compiler: compiler as any,
     setActive,
     addFile,
     init,
@@ -66,7 +68,7 @@ export const useStore = (initial: Initial) => {
     getImportMap,
     initialShowOutput: false,
     initialOutputMode: 'preview',
-  }) as Store
+  })
 
   // 构建依赖
   const builtImportMap = computed<ImportMap>(() => genImportMap(versions))
@@ -94,36 +96,39 @@ export const useStore = (initial: Initial) => {
       state.files[IMPORT_MAP] = new File(
         IMPORT_MAP,
         JSON.stringify(content, undefined, 2),
-        hideFile
+        hideFile.value
       )
     },
     { immediate: true, deep: true }
   )
 
+  // 监听组件库版本变化,
+  // 重新编译 lib-install.js
   watch(
     () => versions[playConfig.compLibShort],
     (version) => {
       const file = new File(
         LIB_INSTALL,
-        generateLibInstallCode(version, userOptions.value.styleSource).trim(),
-        hideFile
+        generateLibInstallCode(version).trim(),
+        hideFile.value
       )
       state.files[LIB_INSTALL] = file
+      // 调用 vue-repl 编译
       compileFile(store, file)
     },
     { immediate: true }
   )
+  // 获取组件库
+  function generateLibInstallCode(version: string) {
+    // 组件库样式文件 cdn link
+    const style = genCDNLink(
+      playConfig.compLibName,
+      version,
+      playConfig.coreDeps[playConfig.compLibName].cssPath,
+      playConfig.cdnUrl.skypack
+    )
 
-  function generateLibInstallCode(version: string, styleSource?: string) {
-    // 组件库样式文件
-    const style = styleSource
-      ? styleSource.replace('#VERSION#', version)
-      : genCDNLink(
-          playConfig.compLibName,
-          version,
-          playConfig.coreDeps[playConfig.compLibName].cssPath,
-          playConfig.cdnUrl.skypack
-        )
+    // 替换 lib-install.js 的组件库 style 连接
     return libInstallCode.replace('#STYLE#', style)
   }
 
@@ -147,6 +152,7 @@ export const useStore = (initial: Initial) => {
     return JSON.parse(atou(text))
   }
 
+  // 根据 url 参数生成文件信息
   function initFiles(serializedState: string) {
     const files: StoreState['files'] = {}
     if (serializedState) {
@@ -159,7 +165,7 @@ export const useStore = (initial: Initial) => {
     } else {
       files[APP_FILE] = new File(APP_FILE, welcomeCode)
     }
-    files[MAIN_FILE] = new File(MAIN_FILE, mainCode, hideFile)
+    files[MAIN_FILE] = new File(MAIN_FILE, mainCode, hideFile.value)
     if (!files[USER_IMPORT_MAP]) {
       files[USER_IMPORT_MAP] = new File(
         USER_IMPORT_MAP,
@@ -215,10 +221,10 @@ export const useStore = (initial: Initial) => {
   }
 
   return {
-    ...store,
-    versions,
-    userOptions,
-    init,
+    ...store, // store 对象，内涵 vue-repl 配置
+    versions, // 版本谢谢
+    userOptions, // 用户配置
+    init, // 初始化方法
     serialize,
     setVersion,
     compiler,

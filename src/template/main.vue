@@ -1,9 +1,14 @@
 <script setup lang="ts">
 // @ts-ignore
+import { onMounted } from 'vue'
 import App from './App.vue'
 // @ts-ignore
-import { libInstall } from './lib-install.js'
+import { getUnocssCompileRes, libInstall, sendHtml } from './lib-install.js'
 libInstall()
+onMounted(() => {
+  sendHtml()
+  getUnocssCompileRes()
+})
 </script>
 
 <template>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { OMessage as message } from 'onu-ui'
+import { Repl } from '@vue/repl'
 import Header from '@/components/Header.vue'
 import { type UserOptions, type Versions, useStore } from '@/composables/store'
 import { generate } from '@/utils/uno/uno'
-// @ts-ignore
 import { handleKeydown } from '@/utils/format'
-import { Repl } from '../vue-repl/vue-repl.js'
 import playConfig from '../playground.config'
 import type { OMessageProps } from 'onu-ui'
 
@@ -46,6 +45,22 @@ store.init().then(() => {
 watchEffect(() => {
   history.replaceState({}, '', `#${store.serialize()}`)
 })
+
+// 接受 div后用unocss编译再发送回去，实现图标显示
+window.addEventListener(
+  'message',
+  (event) => {
+    if (typeof event.data === 'string') {
+      generate(event.data, (css: string) => {
+        const frame = document.querySelectorAll('iframe')
+        if (frame.length > 0) {
+          frame[0].contentWindow?.postMessage(css, '*')
+        }
+      })
+    }
+  },
+  false
+)
 </script>
 
 <template>
@@ -60,7 +75,6 @@ watchEffect(() => {
       :clear-console="false"
       :show-import-map="store.userOptions.value.showHidden || false"
       @keydown="(event) => handleKeydown(event, store)"
-      @unocss-inject="generate"
     />
     <div
       v-if="loading"
